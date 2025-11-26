@@ -1,5 +1,6 @@
 const { data, generateId } = require('../models/dataStore');
 const { generatePRD, validatePRD } = require('../services/prdService');
+const { validatePaymentToken } = require('../utils/payment');
 
 /**
  * Generate a new PRD document (requires $5 payment)
@@ -9,7 +10,7 @@ async function createPRD(req, res) {
     const userId = req.user.id;
     const { template_id = 'default', project_details, payment_token } = req.body;
 
-    // In a real implementation, verify payment here
+    // Verify payment
     if (!payment_token) {
       return res.status(402).json({ 
         error: 'Payment required',
@@ -17,11 +18,7 @@ async function createPRD(req, res) {
       });
     }
 
-    // Simulate payment verification
-    // In production, this would call Stripe API
-    const paymentVerified = payment_token === 'test_payment_token' || payment_token.startsWith('tok_');
-
-    if (!paymentVerified) {
+    if (!validatePaymentToken(payment_token)) {
       return res.status(402).json({ 
         error: 'Payment verification failed',
         message: 'Invalid payment token'
@@ -213,10 +210,7 @@ async function submitForReview(req, res) {
       });
     }
 
-    // Simulate payment verification
-    const paymentVerified = payment_token === 'test_payment_token' || payment_token.startsWith('tok_');
-
-    if (!paymentVerified) {
+    if (!validatePaymentToken(payment_token)) {
       return res.status(402).json({ 
         error: 'Payment verification failed',
         message: 'Invalid payment token'

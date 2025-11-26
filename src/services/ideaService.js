@@ -4,9 +4,6 @@
  * @returns {object} - Structured tree with vision, mission, and features
  */
 function parseIdea(ideaText) {
-  // Extract key components from the idea text
-  const words = ideaText.toLowerCase().split(/\s+/);
-  
   // Generate a simple structure based on the input
   // In a real implementation, this would use NLP
   const structure = {

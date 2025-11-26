@@ -1,4 +1,5 @@
 const { data, generateId } = require('../models/dataStore');
+const { validatePaymentToken } = require('../utils/payment');
 
 /**
  * Get available subscription plans
@@ -31,8 +32,7 @@ async function subscribe(req, res) {
     }
 
     // Verify payment
-    const paymentVerified = payment_token === 'test_payment_token' || payment_token.startsWith('tok_');
-    if (!paymentVerified) {
+    if (!validatePaymentToken(payment_token)) {
       return res.status(402).json({ error: 'Payment verification failed' });
     }
 
