@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { authMiddleware } = require('../middleware/auth');
+const { apiLimiter, paymentLimiter } = require('../middleware/rateLimiter');
 const {
   createPRD,
   getTemplates,
@@ -13,19 +14,19 @@ const {
 } = require('../controllers/prdController');
 
 // PRD generation (requires payment)
-router.post('/generate', authMiddleware, createPRD);
+router.post('/generate', authMiddleware, paymentLimiter, createPRD);
 
 // Template management
-router.get('/templates', authMiddleware, getTemplates);
-router.put('/template', authMiddleware, updateTemplate);
+router.get('/templates', authMiddleware, apiLimiter, getTemplates);
+router.put('/template', authMiddleware, apiLimiter, updateTemplate);
 
 // Customization
-router.post('/customize', authMiddleware, customizePRD);
-router.get('/preview', authMiddleware, previewPRD);
-router.post('/export', authMiddleware, exportPRD);
+router.post('/customize', authMiddleware, apiLimiter, customizePRD);
+router.get('/preview', authMiddleware, apiLimiter, previewPRD);
+router.post('/export', authMiddleware, apiLimiter, exportPRD);
 
 // Human review
-router.post('/review', authMiddleware, submitForReview);
-router.get('/review/status', authMiddleware, getReviewStatus);
+router.post('/review', authMiddleware, paymentLimiter, submitForReview);
+router.get('/review/status', authMiddleware, apiLimiter, getReviewStatus);
 
 module.exports = router;

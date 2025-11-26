@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const { authLimiter } = require('../middleware/rateLimiter');
 const { register, login } = require('../utils/auth');
 
 /**
  * Test registration endpoint
  */
-router.post('/register', async (req, res) => {
+router.post('/register', authLimiter, async (req, res) => {
   try {
     const { email, password, role } = req.body;
     const result = await register(email, password, role);
@@ -27,7 +28,7 @@ router.post('/register', async (req, res) => {
 /**
  * Test login endpoint
  */
-router.post('/login', async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
     const result = await login(email, password);
