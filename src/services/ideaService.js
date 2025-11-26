@@ -41,7 +41,7 @@ function extractValueProposition(ideaText) {
     }
   }
   
-  return sentences[0]?.trim() || 'Empowering users to achieve their goals';
+  return sentences.length > 0 ? sentences[0].trim() : 'Empowering users to achieve their goals';
 }
 
 /**

@@ -10,7 +10,10 @@ function validatePaymentToken(paymentToken) {
   }
 
   // In development/testing, accept test tokens
-  if (process.env.NODE_ENV !== 'production') {
+  // Note: Ensure NODE_ENV is properly set in all environments
+  const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
+  
+  if (isDevelopment) {
     return paymentToken === 'test_payment_token' || paymentToken.startsWith('tok_');
   }
 
@@ -24,7 +27,7 @@ function validatePaymentToken(paymentToken) {
   //   return false;
   // }
 
-  // For now, only accept tokens that look like Stripe tokens
+  // For now, only accept tokens that look like Stripe tokens in production
   return paymentToken.startsWith('tok_') && paymentToken.length > 20;
 }
 

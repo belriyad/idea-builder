@@ -410,7 +410,7 @@ Example: I am building a new website to help new entrepreneurs with business ide
                 if (response.ok) {
                     authToken = data.token;
                     document.getElementById('userEmail').textContent = email;
-                    document.getElementById('userToken').textContent = authToken.substring(0, 20) + '...';
+                    document.getElementById('userToken').textContent = '***' + authToken.slice(-8);
                     document.getElementById('authInfo').classList.add('show');
                     showMessage('Registration successful!');
                 } else {
@@ -442,7 +442,7 @@ Example: I am building a new website to help new entrepreneurs with business ide
                 if (response.ok) {
                     authToken = data.token;
                     document.getElementById('userEmail').textContent = email;
-                    document.getElementById('userToken').textContent = authToken.substring(0, 20) + '...';
+                    document.getElementById('userToken').textContent = '***' + authToken.slice(-8);
                     document.getElementById('authInfo').classList.add('show');
                     showMessage('Login successful!');
                 } else {
